@@ -1,15 +1,13 @@
-FROM maven:3.8.5-openjdk-17 as build​
+FROM maven:3.8.5-openjdk-17 AS build
 
-COPY . .​
+COPY . .
 
-RUN mvn clean package -DskipTests​
+RUN mvn clean package -DskipTests
 
-​
+FROM openjdk:17.0.1-jdk-slim
 
-FROM openjdk:17.0.1-jdk-slim​
+COPY --from=build /target/Tienda-1.jar Tienda.jar
 
-COPY --from=build /target/Tienda-1.jar Tienda.jar​
-
-EXPOSE 80​
+EXPOSE 80
 
 ENTRYPOINT ["java","-jar","Tienda.jar"]
